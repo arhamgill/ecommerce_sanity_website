@@ -9,7 +9,7 @@ function ProductThumbnail({ product }: { product: Product }) {
 
   return (
     <Link
-      href={`/products/${product.slug?.current}`}
+      href={`/product/${product.slug?.current}`}
       className={`${outOfStock ? "opacity-50" : ""}group relative block overflow-hidden rounded-lg border border-gray-200 bg-white shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out`}
     >
       <div className="relative h-64 w-full overflow-hidden rounded-lg">
