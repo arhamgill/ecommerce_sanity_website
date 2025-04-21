@@ -13,11 +13,11 @@ import { PackageIcon, TrolleyIcon } from "@sanity/icons";
 
 function Header() {
   const { user } = useUser();
-  console.log(user);
+  // console.log(user);
   const createClerkPasskey = async () => {
     try {
       const res = await user?.createPasskey();
-      console.log(res);
+      // console.log(res);
     } catch (error) {
       console.error("Error creating passkey:", error);
     }

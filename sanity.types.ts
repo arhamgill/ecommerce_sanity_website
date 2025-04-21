@@ -252,9 +252,9 @@ export type SanityImageMetadata = {
 export type AllSanitySchemaTypes = SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityFileAsset | Geopoint | Sales | Order | Product | Category | Slug | BlockContent | SanityImageCrop | SanityImageHotspot | SanityImageAsset | SanityAssetSourceData | SanityImageMetadata;
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ./sanity/lib/categories/getAllCategories.ts
-// Variable: query
+// Variable: category_query
 // Query: *[_type == "category"]    | order(name asc)
-export type QueryResult = Array<{
+export type Category_queryResult = Array<{
   _id: string;
   _type: "category";
   _createdAt: string;
@@ -265,10 +265,65 @@ export type QueryResult = Array<{
   description?: string;
 }>;
 
+// Source: ./sanity/lib/products/getAllLLProducts.ts
+// Variable: products_query
+// Query: *[_type == "product"]    | order(name asc)
+export type Products_queryResult = Array<{
+  _id: string;
+  _type: "product";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  name?: string;
+  description?: string;
+  image?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  stock?: number;
+  price?: number;
+  currency?: "EUR" | "GBP" | "INR" | "USD";
+  category?: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "category";
+  };
+  slug?: Slug;
+}>;
+
+// Source: ./sanity/lib/sales/getActiveSaleByCode.ts
+// Variable: sales_query
+// Query: *[_type == "sales" && couponCode == $code && isActive == true]         | order(validFrom desc)[0]
+export type Sales_queryResult = {
+  _id: string;
+  _type: "sales";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  description?: string;
+  discountAmount?: number;
+  couponCode?: string;
+  validFrom?: string;
+  validUntil?: string;
+  isActive?: boolean;
+} | null;
+
 // Query TypeMap
 import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
-    "\n    *[_type == \"category\"]\n    | order(name asc)": QueryResult;
+    "\n    *[_type == \"category\"]\n    | order(name asc)": Category_queryResult;
+    "\n    *[_type == \"product\"]\n    | order(name asc)": Products_queryResult;
+    "\n        *[_type == \"sales\" && couponCode == $code && isActive == true] \n        | order(validFrom desc)[0]\n": Sales_queryResult;
   }
 }
