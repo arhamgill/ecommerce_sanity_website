@@ -1,10 +1,17 @@
-import { Button } from "@/components/ui/button";
-import Image from "next/image";
+import { getAllProducts } from "@/sanity/lib/products/getAllLLProducts";
+import { getAllCategories } from "@/sanity/lib/categories/getAllCategories";
+import ProductsView from "@/components/ProductsView";
 
-export default function Home() {
+export default async function Home() {
+  const products = await getAllProducts();
+  const categories = await getAllCategories();
+  console.log("products", products);
+  console.log("categories", categories);
   return (
     <>
-      <h1 className="text-center mt-5">Products</h1>
+      <div className="flex flex-col items-center justify-top min-h-screen py-2">
+        <ProductsView products={products} categories={categories} />
+      </div>
     </>
   );
 }
