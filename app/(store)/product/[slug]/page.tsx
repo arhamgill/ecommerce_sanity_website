@@ -2,6 +2,7 @@ import React from "react";
 import { getProductBySlug } from "@/sanity/lib/products/getProductBySlug";
 import Image from "next/image";
 import { imageUrl } from "@/lib/imageUrl";
+import AddToBasketButton from "@/components/AddToBasketButton";
 
 async function page({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
@@ -41,20 +42,7 @@ async function page({ params }: { params: Promise<{ slug: string }> }) {
             <p className="mt-2 text-red-600 font-bold">Out of Stock</p>
           )}
 
-          <div className="mt-6 flex flex-col sm:flex-row gap-4">
-            <button
-              className="w-full sm:w-auto px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition"
-              disabled={outOfStock}
-            >
-              Add to Cart
-            </button>
-            <button
-              className="w-full sm:w-auto px-6 py-3 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition"
-              disabled={outOfStock}
-            >
-              Buy Now
-            </button>
-          </div>
+          <AddToBasketButton disabled={outOfStock} product={product} />
         </div>
       </div>
     </div>

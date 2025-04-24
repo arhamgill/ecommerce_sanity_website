@@ -10,14 +10,15 @@ import React from "react";
 import Form from "next/form";
 import Link from "next/link";
 import { PackageIcon, TrolleyIcon } from "@sanity/icons";
+import { useBasketStore } from "@/store/store";
 
 function Header() {
   const { user } = useUser();
-  // console.log(user);
+  const itemsCount = useBasketStore((state) => state.getItemsCount());
+
   const createClerkPasskey = async () => {
     try {
-      const res = await user?.createPasskey();
-      // console.log(res);
+      await user?.createPasskey();
     } catch (error) {
       console.error("Error creating passkey:", error);
     }
@@ -41,11 +42,14 @@ function Header() {
       </Form>
       <div className="flex items-center gap-3">
         <Link
-          href={"my-cart"}
-          className="flex items-center hover:text-blue-500 transition-all duration-200"
+          href={"/my-cart"}
+          className="relative flex items-center hover:text-blue-500 transition-all duration-200"
         >
           <TrolleyIcon className="w-6 h-6" />
           Cart
+          <span className="absolute -top-3 -right-2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+            {itemsCount}
+          </span>
         </Link>
         <ClerkLoaded>
           <SignedIn>

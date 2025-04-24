@@ -16,6 +16,7 @@ interface BasketState {
   clearBasket: () => void;
   getTotalPrice: () => number;
   getItemsCount: () => number;
+  getItemQuantity: (productId: string) => number;
   getGroupedItems: () => Record<string, BasketItem>;
 }
 
@@ -42,9 +43,27 @@ export const useBasketStore = create<BasketState>()(
       },
 
       removeItem: (productId) => {
-        set((state) => ({
-          items: state.items.filter((item) => item.product._id !== productId),
-        }));
+        set((state) => {
+          const existingItem = state.items.find((item) => item.product._id === productId);
+          if (existingItem) {
+            if (existingItem.quantity > 1) {
+              // Decrease the quantity by 1
+              return {
+                items: state.items.map((item) =>
+                  item.product._id === productId
+                    ? { ...item, quantity: item.quantity - 1 }
+                    : item
+                ),
+              };
+            } else {
+              // Remove the item if quantity is 1
+              return {
+                items: state.items.filter((item) => item.product._id !== productId),
+              };
+            }
+          }
+          return state; // If the product doesn't exist, return the current state
+        });
       },
 
       clearBasket: () => {
@@ -57,6 +76,10 @@ export const useBasketStore = create<BasketState>()(
 
       getItemsCount: () => {
         return get().items.reduce((count, item) => count + item.quantity, 0);
+      },
+      getItemQuantity: (productId) => {
+        const item = get().items.find((item) => item.product._id === productId);
+        return item ? item.quantity : 0; // Return 0 if the product is not in the basket
       },
 
       getGroupedItems: () => {

@@ -7,7 +7,7 @@ async function page({ params }: { params: Promise<{ slug: string }> }) {
   if (products.length === 0) {
     return (
       <div className="text-center mt-5">
-        No products found for category "{slug}"
+        No products found for category {slug}
       </div>
     );
   }
