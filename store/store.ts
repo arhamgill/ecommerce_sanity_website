@@ -17,7 +17,7 @@ interface BasketState {
   getTotalPrice: () => number;
   getItemsCount: () => number;
   getItemQuantity: (productId: string) => number;
-  getGroupedItems: () => Record<string, BasketItem>;
+  getGroupedItems: () => BasketItem[];
 }
 
 // Zustand store with persist middleware
@@ -82,12 +82,7 @@ export const useBasketStore = create<BasketState>()(
         return item ? item.quantity : 0; // Return 0 if the product is not in the basket
       },
 
-      getGroupedItems: () => {
-        return get().items.reduce((grouped, item) => {
-          grouped[item.product._id] = item;
-          return grouped;
-        }, {} as Record<string, BasketItem>);
-      },
+      getGroupedItems: () => get().items,
     }),
     {
       name: 'basket-storage', // Key for localStorage

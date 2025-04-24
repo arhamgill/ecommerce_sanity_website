@@ -33,7 +33,7 @@ function AddToBasketButton({
       <button
         onClick={() => addItem(product)}
         disabled={disabled}
-        className="p-4 flex items-center justify-center h-4 w-4 rounded-full bg-gray-300 cursor-pointer "
+        className="p-4 flex items-center justify-center h-4 w-4 rounded-full bg-blue-500 cursor-pointer "
       >
         +
       </button>

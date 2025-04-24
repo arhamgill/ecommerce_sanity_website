@@ -15,6 +15,10 @@ import { useBasketStore } from "@/store/store";
 function Header() {
   const { user } = useUser();
   const itemsCount = useBasketStore((state) => state.getItemsCount());
+  const [isClient, setIsClient] = React.useState(false);
+  React.useEffect(() => {
+    setIsClient(true);
+  });
 
   const createClerkPasskey = async () => {
     try {
@@ -23,6 +27,7 @@ function Header() {
       console.error("Error creating passkey:", error);
     }
   };
+  if (!isClient) return null; // Prevents hydration error
   return (
     <header className="px-1 py-2 sm:px-5 flex flex-col gap-y-3 justify-between items-center lg:flex-row">
       <Link
