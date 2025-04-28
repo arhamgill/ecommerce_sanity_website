@@ -3,7 +3,7 @@ import { persist } from 'zustand/middleware';
 import { Product } from '../sanity.types'; // Adjust the path to your Sanity types
 
 // Interface for a basket item
-interface BasketItem {
+export interface BasketItem {
   product: Product;
   quantity: number;
 }
