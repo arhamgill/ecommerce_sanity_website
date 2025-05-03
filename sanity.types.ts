@@ -300,6 +300,62 @@ export type Products_by_slug_queryResult = Array<{
   slug?: Slug;
 }>;
 
+// Source: ./sanity/lib/orders/getAllOrders.ts
+// Variable: all_orders_query
+// Query: *[_type == "order" && clerkUserId == $userId] {      ...,      products[] {        ...,        name->       }    }
+export type All_orders_queryResult = Array<{
+  _id: string;
+  _type: "order";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  orderNumber?: string;
+  stripeCheckoutOrderId?: string;
+  stripeCustomerId?: string;
+  clerkUserId?: string;
+  customerName?: string;
+  email?: string;
+  stripePaymentIntentId?: string;
+  orderStatus?: "cancelled" | "delivered" | "pending" | "processing" | "shipped";
+  totalPrice?: number;
+  discountAmount?: number;
+  products: Array<{
+    name: {
+      _id: string;
+      _type: "product";
+      _createdAt: string;
+      _updatedAt: string;
+      _rev: string;
+      name?: string;
+      description?: string;
+      image?: {
+        asset?: {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+        };
+        media?: unknown;
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        _type: "image";
+      };
+      stock?: number;
+      price?: number;
+      currency?: "EUR" | "GBP" | "INR" | "USD";
+      category?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "category";
+      };
+      slug?: Slug;
+    } | null;
+    quantity?: number;
+    _key: string;
+  }> | null;
+}>;
+
 // Source: ./sanity/lib/products/getAllLLProducts.ts
 // Variable: all_products_query
 // Query: *[_type == "product"]    | order(name asc)
@@ -429,6 +485,7 @@ declare module "@sanity/client" {
   interface SanityQueries {
     "\n    *[_type == \"category\"]\n    | order(name asc)": Category_queryResult;
     "\n    *[_type == \"product\" && references(*[_type == \"category\" && slug.current == $slug]._id)]\n    | order(name asc)\n  ": Products_by_slug_queryResult;
+    "\n    *[_type == \"order\" && clerkUserId == $userId] {\n      ...,\n      products[] {\n        ...,\n        name-> \n      }\n    }\n  ": All_orders_queryResult;
     "\n    *[_type == \"product\"]\n    | order(name asc)": All_products_queryResult;
     "\n    *[_type == \"product\" && slug.current == $slug]\n    | order(name asc)[0]": Products_queryResult;
     "\n    *[_type == \"product\" && name match $searchString] | order(name asc)": Products_by_name_queryResult;
