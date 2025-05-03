@@ -265,10 +265,10 @@ export type Category_queryResult = Array<{
   description?: string;
 }>;
 
-// Source: ./sanity/lib/products/getAllLLProducts.ts
-// Variable: products_query
-// Query: *[_type == "product"]    | order(name asc)
-export type Products_queryResult = Array<{
+// Source: ./sanity/lib/categories/getProductsByCategory.ts
+// Variable: products_by_slug_query
+// Query: *[_type == "product" && references(*[_type == "category" && slug.current == $slug]._id)]    | order(name asc)
+export type Products_by_slug_queryResult = Array<{
   _id: string;
   _type: "product";
   _createdAt: string;
@@ -299,6 +299,76 @@ export type Products_queryResult = Array<{
   };
   slug?: Slug;
 }>;
+
+// Source: ./sanity/lib/products/getAllLLProducts.ts
+// Variable: all_products_query
+// Query: *[_type == "product"]    | order(name asc)
+export type All_products_queryResult = Array<{
+  _id: string;
+  _type: "product";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  name?: string;
+  description?: string;
+  image?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  stock?: number;
+  price?: number;
+  currency?: "EUR" | "GBP" | "INR" | "USD";
+  category?: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "category";
+  };
+  slug?: Slug;
+}>;
+
+// Source: ./sanity/lib/products/getProductBySlug.ts
+// Variable: products_query
+// Query: *[_type == "product" && slug.current == $slug]    | order(name asc)[0]
+export type Products_queryResult = {
+  _id: string;
+  _type: "product";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  name?: string;
+  description?: string;
+  image?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  stock?: number;
+  price?: number;
+  currency?: "EUR" | "GBP" | "INR" | "USD";
+  category?: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "category";
+  };
+  slug?: Slug;
+} | null;
 
 // Source: ./sanity/lib/products/getProductsByName.ts
 // Variable: products_by_name_query
@@ -358,7 +428,9 @@ import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
     "\n    *[_type == \"category\"]\n    | order(name asc)": Category_queryResult;
-    "\n    *[_type == \"product\"]\n    | order(name asc)": Products_queryResult;
+    "\n    *[_type == \"product\" && references(*[_type == \"category\" && slug.current == $slug]._id)]\n    | order(name asc)\n  ": Products_by_slug_queryResult;
+    "\n    *[_type == \"product\"]\n    | order(name asc)": All_products_queryResult;
+    "\n    *[_type == \"product\" && slug.current == $slug]\n    | order(name asc)[0]": Products_queryResult;
     "\n    *[_type == \"product\" && name match $searchString] | order(name asc)": Products_by_name_queryResult;
     "\n        *[_type == \"sales\" && couponCode == $code && isActive == true] \n        | order(validFrom desc)[0]\n": Sales_queryResult;
   }

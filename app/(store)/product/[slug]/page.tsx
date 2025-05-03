@@ -7,6 +7,7 @@ import AddToBasketButton from "@/components/AddToBasketButton";
 async function page({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const product = await getProductBySlug(slug);
+  console.log("Product:", product);
 
   if (!product) {
     return <p>Product not found</p>;
