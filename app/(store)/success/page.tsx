@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { useBasketStore } from "@/store/store";
 import { useSearchParams } from "next/navigation";
 
-function page() {
+function Page() {
   const searchParams = useSearchParams();
   const { clearBasket } = useBasketStore();
   const orderNumber = searchParams.get("orderNumber");
@@ -22,4 +22,4 @@ function page() {
   );
 }
 
-export default page;
+export default Page;

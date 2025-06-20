@@ -47,7 +47,7 @@ export async function POST(request: NextRequest) {
 }
 
 async function createOrder(session: Stripe.Checkout.Session) {
-    const { id, amount_total, metadata, total_details, currency, payment_intent, customer } = session;
+    const { id, amount_total, metadata, total_details, payment_intent, customer } = session;
     const { customerEmail, customerFullName, orderNumber, clerkUserId } = metadata as MetaData;
  
     const lineItems = await stripeClient.checkout.sessions.listLineItems(id, {

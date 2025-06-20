@@ -3,10 +3,11 @@ import { getProductBySlug } from "@/sanity/lib/products/getProductBySlug";
 import Image from "next/image";
 import { imageUrl } from "@/lib/imageUrl";
 import AddToBasketButton from "@/components/AddToBasketButton";
+import { Product } from "@/sanity.types";
 
-async function page({ params }: { params: Promise<{ slug: string }> }) {
+async function Page({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const product = await getProductBySlug(slug);
+  const product: Product | null = await getProductBySlug(slug);
   console.log("Product:", product);
 
   if (!product) {
@@ -45,9 +46,9 @@ async function page({ params }: { params: Promise<{ slug: string }> }) {
 
           <AddToBasketButton disabled={outOfStock} product={product} />
         </div>
-      </div>
+      </div>{" "}
     </div>
   );
 }
 
-export default page;
+export default Page;

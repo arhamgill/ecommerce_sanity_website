@@ -12,7 +12,7 @@ import {
   createCheckoutSession,
 } from "@/actions/createCheckoutSession";
 
-function page() {
+function Page() {
   const groupedItems = useBasketStore((state) => state.getGroupedItems());
   const totalItems = useBasketStore((state) => state.getItemsCount());
   const totalPrice = useBasketStore((state) => state.getTotalPrice());
@@ -125,12 +125,11 @@ function page() {
               </button>
             </SignInButton>
           )}
-        </div>
-
+        </div>{" "}
         <div className="h-64 lg:h-0"></div>
       </div>
     </div>
   );
 }
 
-export default page;
+export default Page;
