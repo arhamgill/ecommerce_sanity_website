@@ -28,6 +28,9 @@ export default function RootLayout({
   return (
     <ClerkProvider dynamic>
       <html lang="en" suppressHydrationWarning={true}>
+        <head>
+          <link rel="icon" href="/website.ico" />
+        </head>
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
