@@ -14,12 +14,7 @@ function Page() {
     }
   }, [orderNumber, clearBasket]);
 
-  return (
-    <div className="text-center mt-8">
-      Payment Successful for order number! Plz check the confirmation email sent
-      to you.
-    </div>
-  );
+  return <div className="text-center mt-8">Payment Successful!</div>;
 }
 
 export default Page;

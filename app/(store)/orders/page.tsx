@@ -11,7 +11,7 @@ async function page() {
   const orders = await getAllOrders(userId);
   console.log(orders);
 
-  return <div>page</div>;
+  return <div className="text-center mt-8">Coming Soon!</div>;
 }
 
 export default page;
