@@ -34,7 +34,7 @@ function Header() {
         href={"/"}
         className="text-3xl text-blue-500 font-semibold hover:text-blue-700 transition-all duration-200"
       >
-        Amazon
+        MyShop
       </Link>
       <Form action={"/search"}>
         <input
