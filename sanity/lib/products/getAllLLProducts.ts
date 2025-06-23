@@ -4,7 +4,7 @@ import { sanityFetch } from "../live";
 export const getAllProducts = async () => {
   const all_products_query = defineQuery(`
     *[_type == "product"]
-    | order(name asc)`)
+    | order(name desc)`)
     try {
     const products = await sanityFetch({query: all_products_query});
     return products.data || []
