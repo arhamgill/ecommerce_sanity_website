@@ -6,7 +6,7 @@ export const client = createClient({
   projectId,
   dataset,
   apiVersion,
-  useCdn: true, // Set to false if statically generating pages, using ISR or tag-based revalidation
+  useCdn: false, // false = always fetch fresh data directly from Sanity API (no CDN cache delay)
   stega: {
     studioUrl: process.env.VERCEL_URL
       ? `https://${process.env.VERCEL_URL}/studio`
