@@ -35,10 +35,12 @@ export async function POST(request: NextRequest) {
         try {
             const order = await createOrder(session);
             console.log("Order created:", order);
-        } catch (error) {
+        } catch (error: any) {
             console.error("Error creating order:", error);
-            return NextResponse.json({ error: "Order creation failed" }, { status: 500 });
-            
+            return NextResponse.json({ 
+                error: "Order creation failed", 
+                message: error?.message || String(error) 
+            }, { status: 500 });
         }
     }
     
@@ -54,14 +56,23 @@ async function createOrder(session: Stripe.Checkout.Session) {
         expand: ["data.price.product"],
     })
 
-    const sanityItems = lineItems.data.map((item) => ({
-        _key: crypto.randomUUID(),
-        name: {
-            _type: "reference",
-            _ref: (item.price?.product as Stripe.Product).metadata.productId,
-        },
-        quantity: item.quantity || 0,
-    }));
+    const sanityItems = lineItems.data.map((item) => {
+        const product = item.price?.product as Stripe.Product | undefined;
+        const productId = product?.metadata?.productId;
+        
+        if (!productId) {
+            throw new Error(`Stripe product metadata is missing 'productId'. Product name: "${product?.name || item.description || "Unknown"}"`);
+        }
+
+        return {
+            _key: crypto.randomUUID(),
+            name: {
+                _type: "reference",
+                _ref: productId,
+            },
+            quantity: item.quantity || 0,
+        };
+    });
 
     
     const order = await backendClient.create({
