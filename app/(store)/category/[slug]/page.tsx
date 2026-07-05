@@ -1,3 +1,4 @@
+import { Category } from "@/sanity.types";
 import React from "react";
 import { getProductsByCategory } from "@/sanity/lib/categories/getProductsByCategory";
 import { getAllCategories } from "@/sanity/lib/categories/getAllCategories";
@@ -11,7 +12,7 @@ async function page({ params }: { params: Promise<{ slug: string }> }) {
     getAllCategories(),
   ]);
 
-  const category = categories.find((c) => c.slug?.current === slug);
+  const category = categories.find((c: Category) => c.slug?.current === slug);
   const categoryName = category?.title ?? slug;
 
   return (
