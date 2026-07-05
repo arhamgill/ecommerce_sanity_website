@@ -45,7 +45,7 @@ async function SearchPage({
             <div className="text-6xl mb-4">🔍</div>
             <h2 className="text-xl font-bold text-slate-700 mb-2">Nothing found</h2>
             <p className="text-slate-400 text-sm mb-8 max-w-xs">
-              We couldn't find anything for &quot;{query}&quot;. Try different keywords or browse all products.
+              We couldn&apos;t find anything for &quot;{query}&quot;. Try different keywords or browse all products.
             </p>
             <Link href="/" className="btn btn-primary px-8 py-3">
               Browse All Products

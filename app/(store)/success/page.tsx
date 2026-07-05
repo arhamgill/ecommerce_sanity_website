@@ -63,7 +63,7 @@ function Page() {
             Order Confirmed! 🎉
           </h1>
           <p className="text-slate-500 leading-relaxed">
-            Thank you for your purchase. We're preparing your order and will
+            Thank you for your purchase. We&apos;re preparing your order and will
             send you an update once it ships.
           </p>
         </div>

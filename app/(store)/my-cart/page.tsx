@@ -65,7 +65,7 @@ function Page() {
             Your cart is empty
           </h2>
           <p className="text-slate-400 text-sm mb-8 max-w-xs">
-            Looks like you haven't added anything yet. Explore our collection!
+            Looks like you haven&apos;t added anything yet. Explore our collection!
           </p>
           <Link href="/" className="btn btn-primary px-8 py-3 text-base">
             Start Shopping
