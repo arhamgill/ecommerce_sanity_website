@@ -1,56 +1,59 @@
 "use client";
 import { Category } from "@/sanity.types";
-import React from "react";
-import { useRouter } from "next/navigation";
+import React, { useState } from "react";
+import { useRouter, usePathname } from "next/navigation";
 
 function CategorySelector({ categories }: { categories: Category[] }) {
   const router = useRouter();
+  const pathname = usePathname();
+  const [selected, setSelected] = useState<string | null>(null);
 
-  const handleCategoryChange = (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    const selectedSlug = event.target.value;
-    if (selectedSlug) {
-      router.push(`/category/${selectedSlug}`);
-    }
+  // Detect active category from URL
+  React.useEffect(() => {
+    const match = pathname.match(/\/category\/([^/]+)/);
+    if (match) setSelected(match[1]);
+    else setSelected(null);
+  }, [pathname]);
+
+  const handleSelect = (slug: string | null) => {
+    setSelected(slug);
+    if (slug) router.push(`/category/${slug}`);
+    else router.push("/");
   };
 
   return (
-    <div className="relative">
-      <select
-        defaultValue=""
-        onChange={handleCategoryChange}
-        className="appearance-none bg-blue-500 text-white px-4 py-2 pr-8 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
+    <div className="flex flex-wrap gap-2 items-center">
+      {/* "All" pill */}
+      <button
+        onClick={() => handleSelect(null)}
+        className={`btn text-sm transition-all duration-200 ${
+          selected === null
+            ? "btn-primary shadow-md"
+            : "btn-ghost border border-slate-200 text-slate-600 hover:border-indigo-300"
+        }`}
+        style={{ padding: "0.375rem 1rem" }}
       >
-        <option value="" disabled className="text-black bg-white">
-          Filter by category
-        </option>
-        {categories.map((category) => (
-          <option
+        All Products
+      </button>
+
+      {categories.map((category) => {
+        const slug = category.slug?.current ?? "";
+        const isActive = selected === slug;
+        return (
+          <button
             key={category._id}
-            value={category.slug?.current}
-            className="text-black bg-white"
+            onClick={() => handleSelect(slug)}
+            className={`btn text-sm transition-all duration-200 ${
+              isActive
+                ? "btn-primary shadow-md"
+                : "btn-ghost border border-slate-200 text-slate-600 hover:border-indigo-300"
+            }`}
+            style={{ padding: "0.375rem 1rem" }}
           >
             {category.title}
-          </option>
-        ))}
-      </select>
-      <div className="absolute inset-y-0 right-2 flex items-center pointer-events-none">
-        <svg
-          className="w-4 h-4 text-white"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M19 9l-7 7-7-7"
-          />
-        </svg>
-      </div>
+          </button>
+        );
+      })}
     </div>
   );
 }

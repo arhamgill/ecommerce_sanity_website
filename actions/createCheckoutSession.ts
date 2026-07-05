@@ -56,7 +56,7 @@ export async function createCheckoutSession(items: GroupedBasketItem[], metaData
 
 
                     },
-                    unit_amount: item.product.price! * 100,
+                    unit_amount: Math.round(item.product.price! * 100),
                 },
                 quantity: item.quantity,
             })),
