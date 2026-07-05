@@ -35,11 +35,11 @@ export async function POST(request: NextRequest) {
         try {
             const order = await createOrder(session);
             console.log("Order created:", order);
-        } catch (error: any) {
+        } catch (error) {
             console.error("Error creating order:", error);
             return NextResponse.json({ 
                 error: "Order creation failed", 
-                message: error?.message || String(error) 
+                message: error instanceof Error ? error.message : String(error) 
             }, { status: 500 });
         }
     }
